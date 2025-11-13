@@ -263,6 +263,14 @@ docker exec -it my-wallet-db psql -U postgres
 - So basically, you’re saying: “Run the PostgreSQL shell (psql) inside the running container named my-wallet-db, connecting as user postgres”
 ![img.png](temp_images/example_of_accessing_interactive_terminal_for_docker_postgres.png)
 
+## testing
+- put method: ![img.png](temp_images/transaction_put_method_postman.png)
+- delete method: creating the example using post: ![img.png](temp_images/delete_method_testing_transaction_1.png), here it is showing in the get results: ![img.png](temp_images/delete_transactions_testing_2.png), and then deleting it: ![img.png](temp_images/delete_transactions_3.png)
+
 ## metrics and benchmark
-- 
-> end: prajith ravisankar - date: nov 10, 2025 - time: .
+<TODO: add metrics and benchmark for update and delete endpoints after the MVP cycle>
+
+> end: prajith ravisankar - date: nov 12, 2025 - time: 9:20 PM.
+
+---
+
