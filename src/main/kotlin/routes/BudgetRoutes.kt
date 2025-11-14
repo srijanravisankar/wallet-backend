@@ -8,6 +8,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import java.math.BigDecimal
 
@@ -92,6 +93,47 @@ fun Route.budgetRouting() {
             }
 
             call.respond(HttpStatusCode.OK, budgets)
+        }
+
+        // PUT /budgets/{id} -> update an existing budget
+        put("{id}") {
+            val budgetId = call.parameters["id"]?.toIntOrNull()
+            if (budgetId == null) {
+                call.respond(HttpStatusCode.BadRequest, "invalid budget id")
+                return@put
+            }
+
+            val updatedBudget = call.receive<Budget>()
+
+            val connection = Database.connect()
+
+            val sql = """
+                UPDATE budgets
+                SET user_id = ?, category = ?, sub_category = ?, budget_limit = ?, period_type = ?::period_type, 
+                start_date = ?::date, end_date = ?::date, description = ?
+                WHERE budget_id = ?
+            """.trimIndent()
+
+            connection.use { conn ->
+                val statement = conn.prepareStatement(sql)
+
+                statement.setInt(1, updatedBudget.userId)
+                statement.setString(2, updatedBudget.category)
+                statement.setString(3, updatedBudget.subCategory)
+                statement.setBigDecimal(4, BigDecimal(updatedBudget.budgetLimit))
+                statement.setString(5, updatedBudget.periodType)
+                statement.setString(6, updatedBudget.startDate)
+                statement.setString(7, updatedBudget.endDate)
+                statement.setString(8, updatedBudget.description)
+                statement.setInt(9, budgetId)
+
+                val rowsUpdated = statement.executeUpdate()
+                if (rowsUpdated == 0) {
+                    call.respond(HttpStatusCode.NotFound, "budget not found for budget id to update")
+                } else {
+                    call.respond(HttpStatusCode.OK, "budget updated successfully")
+                }
+            }
         }
     }
 }

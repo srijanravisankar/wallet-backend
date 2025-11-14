@@ -417,3 +417,54 @@ get("{userId}") {
 
 ---
 
+> start: prajith ravisankar - date: nov 13, 2025 - time: 7:05 PM.
+
+```kotlin
+// PUT /budgets/{id} -> update an existing budget
+put("{id}") {
+    val budgetId = call.parameters["id"]?.toIntOrNull()
+    if (budgetId == null) {
+        call.respond(HttpStatusCode.BadRequest, "invalid budget id")
+        return@put
+    }
+
+    val updatedBudget = call.receive<Budget>()
+
+    val connection = Database.connect()
+
+    val sql = """
+        UPDATE budgets
+        SET user_id = ?, category = ?, sub_category = ?, budget_limit = ?, period_type = ?::period_type, 
+        start_date = ?::date, end_date = ?::date, description = ?
+        WHERE budget_id = ?
+    """.trimIndent()
+
+    connection.use { conn ->
+        val statement = conn.prepareStatement(sql)
+
+        statement.setInt(1, updatedBudget.userId)
+        statement.setString(2, updatedBudget.category)
+        statement.setString(3, updatedBudget.subCategory)
+        statement.setBigDecimal(4, BigDecimal(updatedBudget.budgetLimit))
+        statement.setString(5, updatedBudget.periodType)
+        statement.setString(6, updatedBudget.startDate)
+        statement.setString(7, updatedBudget.endDate)
+        statement.setString(8, updatedBudget.description)
+        statement.setInt(9, budgetId)
+
+        val rowsUpdated = statement.executeUpdate()
+        if (rowsUpdated == 0) {
+            call.respond(HttpStatusCode.NotFound, "budget not found for budget id to update")
+        } else {
+            call.respond(HttpStatusCode.OK, "budget updated successfully")
+        }
+    }
+}
+```
+
+- postman output: ![img.png](temp_images/put_method_postman_output_budgets.png), BEFORE: ![img.png](temp_images/before_update_budgets.png) and AFTER: ![img.png](temp_images/after_update_budgets.png)
+- reflected in database: ![img.png](temp_images/postgresql_update_budgets_output.png)
+
+> end: prajith ravisankar - date: nov 13, 2025 - time: 7:30 PM.
+
+---
