@@ -417,6 +417,8 @@ get("{userId}") {
 
 ---
 
+# Update Endpoint for budgets server
+
 > start: prajith ravisankar - date: nov 13, 2025 - time: 7:05 PM.
 
 ```kotlin
@@ -468,3 +470,45 @@ put("{id}") {
 > end: prajith ravisankar - date: nov 13, 2025 - time: 7:30 PM.
 
 ---
+
+> start: prajith ravisankar - date: nov 13, 2025 - time: 10:05 PM.
+
+# Delete endpoint for budgets server
+
+```kotlin
+// DELETE /budgets/{id} -> delete an existing budget
+delete("{id}") {
+    val budgetId = call.parameters["id"]?.toIntOrNull()
+    if (budgetId == null) {
+        call.respond(HttpStatusCode.BadRequest, "invalid budget id")
+        return@delete
+    }
+
+    val connection = Database.connect()
+
+    val sql = "DELETE FROM budgets WHERE budget_id = ?"
+
+    connection.use { conn ->
+        val statement = conn.prepareStatement(sql)
+        statement.setInt(1, budgetId)
+        val rowsDeleted = statement.executeUpdate()
+        if (rowsDeleted == 0) {
+            call.respond(HttpStatusCode.NotFound, "budget not found")
+        } else {
+            call.respond(HttpStatusCode.NoContent)
+        }
+    }
+}
+```
+
+- testing
+  - creating a dummy budget: ![img.png](temp_images/create_dummy_budget_deleting.png)
+  - checking if the dummy budget exists: ![img.png](temp_images/check_if_dummy_budget_exists.png)
+  - delete the dummy budget: ![img.png](temp_images/delete_dummy_budget.png)
+  - check again if the dummy budget is deleted successfully: ![img.png](temp_images/checking_if_dummy_budget_deleted_successfully.png)
+
+> end: prajith ravisankar - date: nov 13, 2025 - time: 10:20 PM.
+
+---
+
+

@@ -1,5 +1,8 @@
 # wallet
 
+## DEVELOPMENT DOCS: documentation.md
+Please refer to [documentation.md](./documentation.md)
+
 This project was created using the [Ktor Project Generator](https://start.ktor.io).
 
 Here are some useful links to get you started:
