@@ -6,6 +6,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
@@ -132,6 +133,30 @@ fun Route.budgetRouting() {
                     call.respond(HttpStatusCode.NotFound, "budget not found for budget id to update")
                 } else {
                     call.respond(HttpStatusCode.OK, "budget updated successfully")
+                }
+            }
+        }
+
+        // DELETE /budgets/{id} -> delete an existing budget
+        delete("{id}") {
+            val budgetId = call.parameters["id"]?.toIntOrNull()
+            if (budgetId == null) {
+                call.respond(HttpStatusCode.BadRequest, "invalid budget id")
+                return@delete
+            }
+
+            val connection = Database.connect()
+
+            val sql = "DELETE FROM budgets WHERE budget_id = ?"
+
+            connection.use { conn ->
+                val statement = conn.prepareStatement(sql)
+                statement.setInt(1, budgetId)
+                val rowsDeleted = statement.executeUpdate()
+                if (rowsDeleted == 0) {
+                    call.respond(HttpStatusCode.NotFound, "budget not found")
+                } else {
+                    call.respond(HttpStatusCode.NoContent)
                 }
             }
         }
