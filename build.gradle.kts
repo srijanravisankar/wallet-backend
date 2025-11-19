@@ -56,4 +56,5 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    implementation("at.favre.lib:bcrypt:0.10.2")
 }

@@ -9,9 +9,9 @@ object Database {
 //        val user = "postgres"
 //        val password = "12345Prasri2004$$"
 
-        val url = "jdbc:postgresql://localhost:5433/walletdb"
-        val user = "walletuser"
-        val password = "walletpass"
+        val url = "jdbc:postgresql://localhost:5432/postgres"
+        val user = "postgres"
+        val password = "mysecretpassword"
 
 
         return DriverManager.getConnection(url, user, password)

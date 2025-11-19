@@ -6,6 +6,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import at.favre.lib.crypto.bcrypt.BCrypt
+
 
 fun Route.userRouting() {
     route("/users") {
@@ -25,7 +27,10 @@ fun Route.userRouting() {
                 statement.setString(1, user.firstName)
                 statement.setString(2, user.lastName)
                 statement.setString(3, user.email)
-                statement.setString(4, user.password)
+//                statement.setString(4, user.password)
+                val hashedPassword = BCrypt.withDefaults().hashToString(12, user.password.toCharArray())
+                statement.setString(4, hashedPassword)
+
 
                 statement.executeUpdate()
             }
@@ -58,7 +63,9 @@ fun Route.userRouting() {
                 if (resultSet.next()) {
                     val storedPassword = resultSet.getString("password")
 
-                    if (storedPassword == password) {
+                    val result = BCrypt.verifyer().verify(password.toCharArray(), storedPassword)
+
+                    if (result.verified) {
                         user = User(
                             userId = resultSet.getInt("user_id"),
                             firstName = resultSet.getString("first_name"),
