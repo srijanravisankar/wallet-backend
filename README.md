@@ -1,8 +1,12 @@
 # Wallet Backend
 
+---
+
 ## Project Overview
 
 This is a **Personal Finance Management System** built as a class project for **COMP 4411 - Programming Languages** at Lakehead University. The project demonstrates various programming paradigms including Object-Oriented, Procedural, and Concurrent programming using Kotlin and the Ktor framework.
+
+---
 
 ## Important Links
 
@@ -12,7 +16,15 @@ This is a **Personal Finance Management System** built as a class project for **
 > **📌 Development Notes:** [documentation.md](./documentation.md)  
 > **Frontend Repo:** [wallet-frontend](https://github.com/srijanravisankar/wallet-frontend)
 
+---
 
+## System Requirements
+
+- **OS:** macOS, Linux, or Windows
+- **RAM:** Minimum 4GB (8GB recommended)
+- **Disk Space:** ~500MB for dependencies and Docker images
+- **Java:** JDK 21
+- **Docker:** Latest stable version
 
 ---
 
@@ -22,7 +34,12 @@ https://github.com/user-attachments/assets/23318c55-659b-4968-b17e-a8f325a49389
 
 ---
 
-### system design architecture and flow
+## 🎖️ System design architecture and flow
+
+<details>
+  <summary><b>Expand to see System design and Architecture</b></summary>
+
+<br>
 
 ![user login flow](./temp_images/Budget%20Planner%20_%20Expense%20Tracker-7.jpg)
 
@@ -30,9 +47,15 @@ https://github.com/user-attachments/assets/23318c55-659b-4968-b17e-a8f325a49389
 
 ![system architecture](./temp_images/Budget%20Planner%20_%20Expense%20Tracker-9.jpg)
 
+</details>
+
+
 ---
 
-## Setup & Installation
+## 🎖️ Setup & Installation
+
+<details>
+<summary><b>Expand to see Setup and Installation</b></summary>
 
 ### Prerequisites
 
@@ -193,6 +216,8 @@ curl http://localhost:8080/transactions/1
 - Import the OpenAPI documentation from: `http://localhost:8080/openapi`
 - Test all CRUD endpoints for Users, Transactions, and Budgets
 
+</details>
+
 ---
 
 ## Docker Commands Reference
@@ -205,16 +230,6 @@ curl http://localhost:8080/transactions/1
 | `docker rm my-wallet-db`                        | Remove the container (must be stopped first) |
 | `docker exec -it my-wallet-db psql -U postgres` | Access PostgreSQL CLI                        |
 | `docker logs my-wallet-db`                      | View database logs                           |
-
----
-
-## System Requirements
-
-- **OS:** macOS, Linux, or Windows
-- **RAM:** Minimum 4GB (8GB recommended)
-- **Disk Space:** ~500MB for dependencies and Docker images
-- **Java:** JDK 21
-- **Docker:** Latest stable version
 
 ---
 
@@ -288,7 +303,11 @@ chmod +x gradlew
 
 - **Netty** - High-performance asynchronous event-driven network application framework
 
-## Programming Paradigms Demonstrated
+## 🎖️ Programming Paradigms Demonstrated
+
+<details>
+
+<summary><b>Expand to see Programming Paradigms demonstrated in this Project</b></summary>
 
 ### 1. Object-Oriented Programming (OOP)
 
@@ -490,6 +509,8 @@ fun <T> query(
     }
 }
 ```
+
+</details>
 
 ## Key Features
 
